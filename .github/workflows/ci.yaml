@@ -1,0 +1,17 @@
+name: Complete DevOps Project Pipeline
+
+on:
+  push:
+     branches:
+          -main
+
+jobs:
+    build_and_push:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v2
+            - name: Set Short SHA
+              run: |
+                echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV\
+        -name: Build Docker Image
