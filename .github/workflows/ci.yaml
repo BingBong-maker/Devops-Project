@@ -21,9 +21,14 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t bingbong-maker/devops-project:${{ steps.short_sha.outputs.short_sha }} .    
-      - name: Login to Dockerhub
-        run: | 
-          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Push to Dockerhub
-        run: |
-          docker push bingbong-maker/devops-project:${{ steps.short_sha.outputs.short_sha }}
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: bingbong-maker/devops-project:${{ steps.short_sha.outputs.short_sha }}
